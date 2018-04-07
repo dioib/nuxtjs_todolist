@@ -1,6 +1,7 @@
 <template>
   <section class="container">
     <div>
+      <h1 class="subtitle">TaskList</h1>
       <TaskList/>
     </div>
   </section>

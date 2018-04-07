@@ -23,12 +23,13 @@ const createStore = () => {
         bindFirebaseRef('posts', postsRef)
       }),
       ADD_POST: firebaseAction((ctx, { text }) => {
-        postsRef.push({
-          text
-        })
+        postsRef.push({text})
       }),
       REMOVE_POST: firebaseAction((ctx, { post }) => {
         postsRef.child(post['.key']).remove()
+      }),
+      UPDATE_POST: firebaseAction((ctx, { post }) => {
+        postsRef.child(post['.key']).update({text:post.text})
       })
     }
   })

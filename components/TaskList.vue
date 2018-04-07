@@ -1,14 +1,15 @@
 <template lang="html">
   <div class="timeline">
       <ul>
-        <li v-for="post in posts" :key="post['.key']">
-          {{post.text}}
-          <button  @click="removeTodo(post)">X</button>
+        <li v-for="(post, index) in posts" :key="post['.key']">
+          <div v-bind:class="['hoge-' + index]" v-if="!post.edit" v-text="post.text" @click="editPost(post, index)"></div>
+          <input v-bind:class="['hoge-' + index]" v-if="post.edit" type="text" v-model="post.text" @blur="updatePost(post, index)">
+          <button  @click="removeTodo(post)">削除</button>
         </li>
       </ul>
       <form @submit.prevent="addToPost">
         <input v-model="newPostText">
-        <button>Add #{{ posts.length }}</button>
+        <button>追加 #{{ posts.length }}</button>
       </form>
   </div>
 </template>
@@ -23,6 +24,7 @@ export default{
   data: function(){
     return {
       newPostText: '',
+      edit: false
     }
   },
   methods:{
@@ -32,10 +34,16 @@ export default{
     async addToPost () {
       await this.$store.dispatch('ADD_POST', { text:this.newPostText })
       this.newPostText = ''
+    },
+    editPost(post){
+      this.$set(post,"edit",true)
+    },
+    updatePost(post){
+      this.$set(post,"edit", false)
+      this.$store.dispatch('UPDATE_POST', { post })
     }
   },
   created () {
-      //this.source = postsRef
       this.$store.dispatch('INIT_POSTS', this.source)
   },
 }
