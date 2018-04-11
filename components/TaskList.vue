@@ -2,9 +2,10 @@
   <div class="timeline">
       <ul>
         <li v-for="(post, index) in posts" :key="post['.key']">
-          <div v-bind:class="['hoge-' + index]" v-if="!post.edit" v-text="post.text" @click="editPost(post, index)"></div>
-          <input v-bind:class="['hoge-' + index]" v-if="post.edit" type="text" v-model="post.text" @blur="updatePost(post, index)">
-          <button  @click="removeTodo(post)">削除</button>
+          <div class="hoge" v-if="!post.edit" v-text="post.text"></div>
+          <input v-bind:class="['hoge-' + index]" v-if="post.edit" @focus="focustest()" v-model="post.text">
+          <button @click="editPost(post,index)">{{post.btnEdit ? post.btnEdit : '編集'}}</button>
+          <button @click="removeTodo(post)">削除</button>
         </li>
       </ul>
       <form @submit.prevent="addToPost">
@@ -24,7 +25,8 @@ export default{
   data: function(){
     return {
       newPostText: '',
-      edit: false
+      edit: false,
+      btnEdit: "編集"
     }
   },
   methods:{
@@ -35,16 +37,24 @@ export default{
       await this.$store.dispatch('ADD_POST', { text:this.newPostText })
       this.newPostText = ''
     },
-    editPost(post){
-      this.$set(post,"edit",true)
+    editPost(post,index){
+      if(post.edit){
+        this.$set(post,"edit", false)
+        this.$store.dispatch('UPDATE_POST', { post })
+        this.$set(post,"btnEdit","編集")
+      }else{
+        this.$set(post,"edit",true)
+        this.$set(post,"btnEdit","更新")
+      }
     },
     updatePost(post){
       this.$set(post,"edit", false)
       this.$store.dispatch('UPDATE_POST', { post })
-    }
+      this.$set(post,"btnEdit","編集")
+    }    
   },
   created () {
-      this.$store.dispatch('INIT_POSTS', this.source)
+    this.$store.dispatch('INIT_POSTS', this.source)
   },
 }
 
@@ -59,6 +69,9 @@ export default{
 }
 .post-enter-active {
   animation: slideIn 0.3s linear;
+}
+.hoge{
+  display:inline
 }
 @keyframes slideIn {
   0% {opacity: 0.0}
