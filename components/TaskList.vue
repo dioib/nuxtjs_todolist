@@ -65,26 +65,20 @@ export default{
 }
 .timeline .posts{
   height: calc(100% - 36px);
-  
 }
 .post-enter-active {
   animation: slideIn 0.3s linear;
 }
 .timeline_item{
-text-align:left;
+  text-align:left;
 }
 .timeline_text{
-display:inline-block;
-width:350pt;
+  display:inline-block;
+  width:350pt;
 }
 .timeline_input{
-
-}
-.timeline_btnEdit{
-  margin-right: auto;
-}
-.timeline_btnRemove{
-
+  display:inline-block;
+  width:350pt;
 }
 @keyframes slideIn {
   0% {opacity: 0.0}

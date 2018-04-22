@@ -12,3 +12,6 @@ dist
 
 # firebase 設定
 plugins/firebase.js
+
+# package-lock.json
+package-lock.json
